@@ -23,18 +23,25 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
         mapVertices = new LinkedHashMap<>();
     }
 
-    public MapGraph(Graph<V,E> g) {
+    public MapGraph(Graph<V, E> g) {
         this(g.isDirected());
         copy(g, this);
     }
 
     @Override
-    public boolean validVertex(V vert) { return (mapVertices.get(vert) != null);   }
+    public boolean validVertex(V vert) {
+        return (mapVertices.get(vert) != null);
+    }
 
     @Override
     public Collection<V> adjVertices(V vert) {
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        if (!validVertex(vert))
+            return null;
+
+        MapVertex<V,E> vertex = mapVertices.get(vert);
+
+        return vertex.getAllAdjVerts();
     }
 
     @Override
@@ -106,7 +113,16 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
     @Override
     public Collection<Edge<V, E>> incomingEdges(V vert) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        ArrayList<Edge<V, E>> incomingEdgesList = new ArrayList<>();
+        if (vertices.contains(vert)) {
+            Iterable<Edge<V, E>> allEdges = this.edges();
+            for (Edge<V, E> edge : allEdges) {
+                if (edge.getVDest().equals(vert)) {
+                    incomingEdgesList.add(edge);
+                }
+            }
+        }
+        return incomingEdgesList;
     }
 
     @Override
@@ -148,7 +164,7 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
         if (!isDirected)
             // if vDest different vOrig
             if (edge(vDest, vOrig) == null) {
-                Edge<V, E> otherEdge = new Edge<>( mvd.getElement(), mvo.getElement(), weight);
+                Edge<V, E> otherEdge = new Edge<>(mvd.getElement(), mvo.getElement(), weight);
                 mvd.addAdjVert(mvo.getElement(), otherEdge);
                 numEdges++;
             }
@@ -215,7 +231,7 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
 
         MapGraph<V, E> g = new MapGraph<>(this.isDirected);
 
-        copy(this,g);
+        copy(this, g);
 
         return g;
     }
@@ -233,4 +249,11 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
         }
         return s;
     }
+
 }
+
+
+
+
+
+

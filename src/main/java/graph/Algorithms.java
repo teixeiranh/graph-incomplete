@@ -9,48 +9,94 @@ import java.util.LinkedList;
 import java.util.function.BinaryOperator;
 
 /**
- *
  * @author DEI-ISEP
- *
  */
 public class Algorithms {
 
-    /** Performs breadth-first search of a Graph starting in a vertex
+    /**
+     * Performs breadth-first search of a Graph starting in a vertex
      *
-     * @param g Graph instance
+     * @param g    Graph instance
      * @param vert vertex that will be the source of the search
      * @return a LinkedList with the vertices of breadth-first search
      */
     public static <V, E> LinkedList<V> BreadthFirstSearch(Graph<V, E> g, V vert) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!g.validVertex(vert)) {
+            return null;
+        }
+
+        LinkedList<V> qbfs = new LinkedList<>();
+        ArrayList<V> qaux = new ArrayList<>();
+        boolean[] visited = new boolean[g.numVertices()];
+        qbfs.add(vert);
+        qaux.add(vert);
+        visited[g.key(vert)] = true;
+        while (!qaux.isEmpty()) {
+            V vInf = qaux.remove(0);
+            for (V vAdj : g.adjVertices(vInf)) {
+                if (!visited[g.key(vAdj)]) {
+                    qbfs.add(vAdj);
+                    qaux.add(vAdj);
+                    visited[g.key(vAdj)] = true;
+                }
+            }
+
+        }
+        return qbfs;
     }
 
-    /** Performs depth-first search starting in a vertex
+
+    /**
+     * Performs depth-first search starting in a vertex
      *
-     * @param g Graph instance
-     * @param vOrig vertex of graph g that will be the source of the search
+     * @param g       Graph instance
+     * @param vOrig   vertex of graph g that will be the source of the search
      * @param visited set of previously visited vertices
-     * @param qdfs return LinkedList with vertices of depth-first search
+     * @param qdfs    return LinkedList with vertices of depth-first search
      */
     private static <V, E> void DepthFirstSearch(Graph<V, E> g, V vOrig, boolean[] visited, LinkedList<V> qdfs) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        qdfs.add(vOrig);
+        visited[g.key(vOrig)] = true;
+        for (V vAdj : g.adjVertices(vOrig)) {
+            if (!visited[g.key(vAdj)]) {
+                DepthFirstSearch(g, vAdj, visited, qdfs);
+            }
+        }
     }
 
-    /** Performs depth-first search starting in a vertex
+    /**
+     * Performs depth-first search starting in a vertex
      *
-     * @param g Graph instance
+     * @param g    Graph instance
      * @param vert vertex of graph g that will be the source of the search
-
      * @return a LinkedList with the vertices of depth-first search
      */
     public static <V, E> LinkedList<V> DepthFirstSearch(Graph<V, E> g, V vert) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!g.validVertex(vert)) {
+            return null;
+        }
+
+        LinkedList<V> qdfs = new LinkedList<>();
+        boolean[] visited = new boolean[g.numVertices()];
+        qdfs.add(vert);
+        visited[g.key(vert)] = true;
+        for (V vAdj : g.adjVertices(vert)) {
+            if (!g.validVertex(vAdj)) {
+                return null;
+            }
+
+            if (!visited[g.key(vAdj)]) {
+                DepthFirstSearch(g, vAdj, visited, qdfs);
+            }
+        }
+        return qdfs;
     }
 
-    /** Returns all paths from vOrig to vDest
+    /**
+     * Returns all paths from vOrig to vDest
      *
      * @param g       Graph instance
      * @param vOrig   Vertex that will be the source of the path
@@ -65,7 +111,8 @@ public class Algorithms {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /** Returns all paths from vOrig to vDest
+    /**
+     * Returns all paths from vOrig to vDest
      *
      * @param g     Graph instance
      * @param vOrig information of the Vertex origin
@@ -90,20 +137,21 @@ public class Algorithms {
      */
     private static <V, E> void shortestPathDijkstra(Graph<V, E> g, V vOrig,
                                                     Comparator<E> ce, BinaryOperator<E> sum, E zero,
-                                                    boolean[] visited, V [] pathKeys, E [] dist) {
-        
+                                                    boolean[] visited, V[] pathKeys, E[] dist) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-   
-    /** Shortest-path between two vertices
+
+    /**
+     * Shortest-path between two vertices
      *
-     * @param g graph
-     * @param vOrig origin vertex
-     * @param vDest destination vertex
-     * @param ce comparator between elements of type E
-     * @param sum sum two elements of type E
-     * @param zero neutral element of the sum in elements of type E
+     * @param g         graph
+     * @param vOrig     origin vertex
+     * @param vDest     destination vertex
+     * @param ce        comparator between elements of type E
+     * @param sum       sum two elements of type E
+     * @param zero      neutral element of the sum in elements of type E
      * @param shortPath returns the vertices which make the shortest path
      * @return if vertices exist in the graph and are connected, true, false otherwise
      */
@@ -114,13 +162,14 @@ public class Algorithms {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /** Shortest-path between a vertex and all other vertices
+    /**
+     * Shortest-path between a vertex and all other vertices
      *
-     * @param g graph
+     * @param g     graph
      * @param vOrig start vertex
-     * @param ce comparator between elements of type E
-     * @param sum sum two elements of type E
-     * @param zero neutral element of the sum in elements of type E
+     * @param ce    comparator between elements of type E
+     * @param sum   sum two elements of type E
+     * @param zero  neutral element of the sum in elements of type E
      * @param paths returns all the minimum paths
      * @param dists returns the corresponding minimum distances
      * @return if vOrig exists in the graph true, false otherwise
@@ -143,20 +192,22 @@ public class Algorithms {
      * @param path     stack with the minimum path (correct order)
      */
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
-                                       V [] pathKeys, LinkedList<V> path) {
+                                       V[] pathKeys, LinkedList<V> path) {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /** Calculates the minimum distance graph using Floyd-Warshall
-     * 
-     * @param g initial graph
-     * @param ce comparator between elements of type E
+    /**
+     * Calculates the minimum distance graph using Floyd-Warshall
+     *
+     * @param g   initial graph
+     * @param ce  comparator between elements of type E
      * @param sum sum two elements of type E
      * @return the minimum distance graph
      */
-    public static <V,E> MatrixGraph <V,E> minDistGraph(Graph <V,E> g, Comparator<E> ce, BinaryOperator<E> sum) {
-        
+    public static <
+            V, E> MatrixGraph<V, E> minDistGraph(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
