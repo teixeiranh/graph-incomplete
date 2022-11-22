@@ -61,9 +61,16 @@ public class MatrixGraph<V,E> extends CommonGraph<V,E> {
 
     @Override
     public Collection<Edge<V, E>> edges() {
-        
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        ArrayList<Edge<V, E>> listAllEdges = new ArrayList<>();
+        // traverse adjacency matrix
+        for (int i = 0; i < numVerts; i++) {
+            // if undirected we only need to check upper triangular matrix entries
+            // because its symmetric, otherwise we need to check all entries
+            for (int j = !isDirected() ? i : 0; j < numVerts; j++) {
+                if (edgeMatrix[i][j] != null) listAllEdges.add(edgeMatrix[i][j]);
+            }
+        }
+        return listAllEdges;    }
 
     @Override
     public Edge<V, E> edge(V vOrig, V vDest) {
@@ -111,8 +118,16 @@ public class MatrixGraph<V,E> extends CommonGraph<V,E> {
 
     @Override
     public Collection<Edge<V, E>> outgoingEdges(V vert) {
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        Collection<Edge<V, E>> ce = new ArrayList<>();
+        int vertKey = key(vert);
+        if (vertKey == -1)
+            return ce;
+
+        for (int i = 0; i < numVerts; i++) {
+            if (edgeMatrix[vertKey][i] != null) ce.add(edgeMatrix[vertKey][i]);
+        }
+        return ce;
     }
 
     @Override

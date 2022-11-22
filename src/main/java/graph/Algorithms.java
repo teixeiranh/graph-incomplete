@@ -108,7 +108,23 @@ public class Algorithms {
     private static <V, E> void allPaths(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
                                         LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        path.push(vOrig);
+        int keyOrigin = g.key(vOrig);
+        visited[keyOrigin] = true;
+        for (V vAdj : g.adjVertices(vOrig)) {
+            if (vAdj == vDest) {
+                path.push(vDest);
+                paths.add(path);
+                path.pop();
+            }
+            else {
+                int keyAdj = g.key(vAdj);
+                if (!visited[keyAdj]) {
+                    allPaths(g, vAdj, vDest, visited, path, paths);
+                }
+            }
+        }
+        path.pop();
     }
 
     /**
@@ -121,7 +137,11 @@ public class Algorithms {
      */
     public static <V, E> ArrayList<LinkedList<V>> allPaths(Graph<V, E> g, V vOrig, V vDest) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        LinkedList<V> path = new LinkedList<>();
+        ArrayList<LinkedList<V>> paths = new ArrayList<>();
+        boolean[] visited = new boolean[g.numVertices()];
+        allPaths(g, vOrig, vDest, visited, path, paths);
+        return paths;
     }
 
     /**
@@ -194,7 +214,12 @@ public class Algorithms {
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
                                        V[] pathKeys, LinkedList<V> path) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        path.push(vDest);
+        int vKey = (int) pathKeys[g.key(vDest)];
+        if (vKey != -1) {
+            vDest = pathKeys[vKey];
+            getPath(g, vOrig, vDest, pathKeys, path);
+        }
     }
 
     /**
